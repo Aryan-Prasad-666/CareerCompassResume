@@ -1,0 +1,749 @@
+<!-- templates/create.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">Create Your Resume</h2>
+            </div>
+            <div class="card-body">
+                <form id="resumeForm" method="POST" action="{{ url_for('create') }}">
+                    <div class="accordion" id="resumeAccordion">
+                        <!-- Personal Information Section -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#personalInfo">
+                                    Personal Information
+                                </button>
+                            </h2>
+                            <div id="personalInfo" class="accordion-collapse collapse show" data-bs-parent="#resumeAccordion">
+                                <div class="accordion-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="full_name" class="form-label">Full Name</label>
+                                            <input type="text" class="form-control" id="full_name" name="full_name" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="job_title" class="form-label">Job Title</label>
+                                            <input type="text" class="form-control" id="job_title" name="job_title" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="email" class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="email" name="email" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="phone" class="form-label">Phone</label>
+                                            <input type="text" class="form-control" id="phone" name="phone" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="linkedin" class="form-label">LinkedIn</label>
+                                            <input type="text" class="form-control" id="linkedin" name="linkedin">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="location" class="form-label">Location</label>
+                                            <input type="text" class="form-control" id="location" name="location">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Summary Section -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#summarySection">
+                                    Professional Summary
+                                </button>
+                            </h2>
+                            <div id="summarySection" class="accordion-collapse collapse" data-bs-parent="#resumeAccordion">
+                                <div class="accordion-body">
+                                    <div class="mb-3">
+                                        <label for="summary" class="form-label">Professional Summary</label>
+                                        <textarea class="form-control" id="summary" name="summary" rows="4"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Skills Section -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#skillsSection">
+                                    Skills
+                                </button>
+                            </h2>
+                            <div id="skillsSection" class="accordion-collapse collapse" data-bs-parent="#resumeAccordion">
+                                <div class="accordion-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Business Skills</label>
+                                        <div id="businessSkills">
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control" name="skills" placeholder="E.g., Project Management">
+                                                <button class="btn btn-outline-danger" type="button" onclick="removeField(this)">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="addField('businessSkills', 'skills')">
+                                            <i class="fas fa-plus"></i> Add Business Skill
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Technical Skills</label>
+                                        <div id="technicalSkills">
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control" name="skills_tech" placeholder="E.g., Python">
+                                                <button class="btn btn-outline-danger" type="button" onclick="removeField(this)">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="addField('technicalSkills', 'skills_tech')">
+                                            <i class="fas fa-plus"></i> Add Technical Skill
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Experience Section -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#experienceSection">
+                                    Experience
+                                </button>
+                            </h2>
+                            <div id="experienceSection" class="accordion-collapse collapse" data-bs-parent="#resumeAccordion">
+                                <div class="accordion-body">
+                                    <div id="experienceEntries">
+                                        <div class="experience-entry card mb-3">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Experience Entry</h5>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Company Name</label>
+                                                        <input type="text" class="form-control" name="company_name">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Job Position</label>
+                                                        <input type="text" class="form-control" name="job_position">
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Location</label>
+                                                        <input type="text" class="form-control" name="job_location">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Start Date</label>
+                                                        <input type="text" class="form-control" name="job_start_date" placeholder="E.g., 2019">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">End Date</label>
+                                                        <input type="text" class="form-control" name="job_end_date" placeholder="E.g., 2023 or Present">
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Description</label>
+                                                    <textarea class="form-control" name="job_description" rows="3" placeholder="Enter bullet points, each on a new line"></textarea>
+                                                </div>
+                                                <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeEntryCard(this)">
+                                                    <i class="fas fa-trash"></i> Remove Entry
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-outline-primary" onclick="addExperienceEntry()">
+                                        <i class="fas fa-plus"></i> Add Another Experience
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Education Section -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#educationSection">
+                                    Education
+                                </button>
+                            </h2>
+                            <div id="educationSection" class="accordion-collapse collapse" data-bs-parent="#resumeAccordion">
+                                <div class="accordion-body">
+                                    <div id="educationEntries">
+                                        <div class="education-entry card mb-3">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Education Entry</h5>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Institution Name</label>
+                                                        <input type="text" class="form-control" name="institution_name">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Degree</label>
+                                                        <input type="text" class="form-control" name="degree_name">
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Location</label>
+                                                        <input type="text" class="form-control" name="education_location">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Start Year</label>
+                                                        <input type="text" class="form-control" name="education_start_date">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">End Year</label>
+                                                        <input type="text" class="form-control" name="education_end_date">
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeEntryCard(this)">
+                                                    <i class="fas fa-trash"></i> Remove Entry
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-outline-primary" onclick="addEducationEntry()">
+                                        <i class="fas fa-plus"></i> Add Another Education
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Certifications Section -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#certificationsSection">
+                                    Certifications
+                                </button>
+                            </h2>
+                            <div id="certificationsSection" class="accordion-collapse collapse" data-bs-parent="#resumeAccordion">
+                                <div class="accordion-body">
+                                    <div id="certificationEntries">
+                                        <div class="certification-entry card mb-3">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Certification Entry</h5>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Certification Name</label>
+                                                        <input type="text" class="form-control" name="certification_name">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label class="form-label">Issuer</label>
+                                                        <input type="text" class="form-control" name="certification_issuer">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label class="form-label">Year</label>
+                                                        <input type="text" class="form-control" name="certification_date">
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeEntryCard(this)">
+                                                    <i class="fas fa-trash"></i> Remove Entry
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-outline-primary" onclick="addCertificationEntry()">
+                                        <i class="fas fa-plus"></i> Add Another Certification
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Interests Section -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#interestsSection">
+                                    Interests & Hobbies
+                                </button>
+                            </h2>
+                            <div id="interestsSection" class="accordion-collapse collapse" data-bs-parent="#resumeAccordion">
+                                <div class="accordion-body">
+                                    <div id="interestEntries">
+                                        <div class="interest-entry card mb-3">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Interest Entry</h5>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Interest/Hobby</label>
+                                                        <input type="text" class="form-control" name="interest">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Description</label>
+                                                        <input type="text" class="form-control" name="interest_description">
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeEntryCard(this)">
+                                                    <i class="fas fa-trash"></i> Remove Entry
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-outline-primary" onclick="addInterestEntry()">
+                                        <i class="fas fa-plus"></i> Add Another Interest
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">Preview Resume</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    /* Reuse existing root variables */
+    :root {
+        --light-gray: #C6C5B9;
+        --teal: #62929E;
+        --dark-teal: #4A6D7C;
+        --dark-green: #393A10;
+        --charcoal: #475657;
+    }
+
+    /* Container and Card Styling */
+    .row.justify-content-center {
+        padding: 5rem 2rem;
+    }
+
+    .col-md-10 {
+        max-width: 1200px; /* Slightly wider for form readability */
+    }
+
+    .card.shadow {
+        background: linear-gradient(145deg, #fff, var(--light-gray));
+        border-radius: 25px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        transition: all 0.5s ease;
+    }
+
+    .card.shadow:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-header.bg-primary.text-white {
+        background: linear-gradient(45deg, var(--dark-teal), var(--teal));
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+        padding: 1.5rem;
+    }
+
+    .card-header h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 2rem;
+        color: var(--light-gray);
+        text-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-body {
+        padding: 2rem;
+    }
+
+    /* Accordion Styling */
+    .accordion-item {
+        background: transparent;
+        border: none;
+        margin-bottom: 1rem;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .accordion-button {
+        background: linear-gradient(90deg, var(--teal), var(--dark-teal));
+        color: var(--light-gray);
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 600;
+        padding: 1.5rem;
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .accordion-button:not(.collapsed) {
+        background: var(--dark-teal);
+        color: var(--light-gray);
+    }
+
+    .accordion-button:focus {
+        box-shadow: none;
+    }
+
+    .accordion-button::after {
+        filter: brightness(0) invert(1); /* White arrow */
+    }
+
+    .accordion-collapse {
+        background: #fff;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+
+    .accordion-body {
+        padding: 2rem;
+    }
+
+    /* Form Elements */
+    .form-label {
+        font-size: 1.1rem;
+        color: var(--charcoal);
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        border: 2px solid var(--light-gray);
+        padding: 0.75rem;
+        font-size: 1rem;
+        color: var(--charcoal);
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: var(--teal);
+        box-shadow: 0 0 10px rgba(98, 146, 158, 0.4);
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    /* Input Groups for Skills */
+    .input-group {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .input-group .form-control {
+        border-right: none;
+    }
+
+    .input-group .btn-outline-danger {
+        border-radius: 0 10px 10px 0;
+        border: 2px solid var(--light-gray);
+        border-left: none;
+        color: var(--charcoal);
+        transition: all 0.3s ease;
+    }
+
+    .input-group .btn-outline-danger:hover {
+        background: var(--teal);
+        color: var(--light-gray);
+        border-color: var(--teal);
+    }
+
+    /* Experience, Education, Certifications, Interests Cards */
+    .experience-entry, .education-entry, .certification-entry, .interest-entry {
+        background: linear-gradient(145deg, #f9f9f9, #fff);
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .experience-entry:hover, .education-entry:hover, .certification-entry:hover, .interest-entry:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .experience-entry .card-body, .education-entry .card-body, .certification-entry .card-body, .interest-entry .card-body {
+        padding: 1.5rem;
+    }
+
+    .card-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.5rem;
+        color: var(--dark-teal);
+        margin-bottom: 1rem;
+    }
+
+    /* Buttons */
+    .btn-outline-primary {
+        border-color: var(--teal);
+        color: var(--teal);
+        border-radius: 10px;
+        padding: 0.5rem 1.5rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-primary:hover {
+        background: var(--teal);
+        color: var(--light-gray);
+        box-shadow: 0 5px 15px rgba(98, 146, 158, 0.4);
+    }
+
+    .btn-outline-danger {
+        border-color: var(--charcoal);
+        color: var(--charcoal);
+        border-radius: 10px;
+        padding: 0.5rem 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-danger:hover {
+        background: var(--teal);
+        color: var(--light-gray);
+        border-color: var(--teal);
+        box-shadow: 0 5px 15px rgba(98, 146, 158, 0.4);
+    }
+
+    .btn-primary.btn-lg {
+        background: linear-gradient(45deg, var(--dark-green), var(--teal));
+        color: var(--light-gray);
+        padding: 1.2rem 4rem;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.3rem;
+        font-weight: 600;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
+        transition: all 0.5s ease;
+    }
+
+    .btn-primary.btn-lg:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .row.justify-content-center {
+            padding: 3rem 1rem;
+        }
+
+        .card-header h2 {
+            font-size: 1.5rem;
+        }
+
+        .accordion-button {
+            font-size: 1.1rem;
+            padding: 1rem;
+        }
+
+        .accordion-body {
+            padding: 1.5rem;
+        }
+
+        .btn-primary.btn-lg {
+            padding: 1rem 3rem;
+            font-size: 1.1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .card-header h2 {
+            font-size: 1.3rem;
+        }
+
+        .accordion-button {
+            font-size: 1rem;
+        }
+
+        .form-label {
+            font-size: 1rem;
+        }
+
+        .form-control {
+            font-size: 0.9rem;
+            padding: 0.5rem;
+        }
+
+        .btn-primary.btn-lg {
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block additional_scripts %}
+<script>
+    function addField(containerId, fieldName) {
+        const container = document.getElementById(containerId);
+        const newField = document.createElement('div');
+        newField.className = 'input-group mb-2';
+        newField.innerHTML = `
+            <input type="text" class="form-control" name="${fieldName}" placeholder="Enter skill">
+            <button class="btn btn-outline-danger" type="button" onclick="removeField(this)">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+        container.appendChild(newField);
+    }
+
+    function removeField(button) {
+        const inputGroup = button.closest('.input-group');
+        inputGroup.remove();
+    }
+
+    function addExperienceEntry() {
+        const container = document.getElementById('experienceEntries');
+        const newEntry = document.createElement('div');
+        newEntry.className = 'experience-entry card mb-3';
+        newEntry.innerHTML = `
+            <div class="card-body">
+                <h5 class="card-title">Experience Entry</h5>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Company Name</label>
+                        <input type="text" class="form-control" name="company_name">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Job Position</label>
+                        <input type="text" class="form-control" name="job_position">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Location</label>
+                        <input type="text" class="form-control" name="job_location">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Start Date</label>
+                        <input type="text" class="form-control" name="job_start_date" placeholder="E.g., 2019">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">End Date</label>
+                        <input type="text" class="form-control" name="job_end_date" placeholder="E.g., 2023 or Present">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" name="job_description" rows="3" placeholder="Enter bullet points, each on a new line"></textarea>
+                </div>
+                <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeEntryCard(this)">
+                    <i class="fas fa-trash"></i> Remove Entry
+                </button>
+            </div>
+        `;
+        container.appendChild(newEntry);
+    }
+
+    function addEducationEntry() {
+        const container = document.getElementById('educationEntries');
+        const newEntry = document.createElement('div');
+        newEntry.className = 'education-entry card mb-3';
+        newEntry.innerHTML = `
+            <div class="card-body">
+                <h5 class="card-title">Education Entry</h5>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Institution Name</label>
+                        <input type="text" class="form-control" name="institution_name">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Degree</label>
+                        <input type="text" class="form-control" name="degree_name">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Location</label>
+                        <input type="text" class="form-control" name="education_location">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Start Year</label>
+                        <input type="text" class="form-control" name="education_start_date">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">End Year</label>
+                        <input type="text" class="form-control" name="education_end_date">
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeEntryCard(this)">
+                    <i class="fas fa-trash"></i> Remove Entry
+                </button>
+            </div>
+        `;
+        container.appendChild(newEntry);
+    }
+
+    function addCertificationEntry() {
+        const container = document.getElementById('certificationEntries');
+        const newEntry = document.createElement('div');
+        newEntry.className = 'certification-entry card mb-3';
+        newEntry.innerHTML = `
+            <div class="card-body">
+                <h5 class="card-title">Certification Entry</h5>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Certification Name</label>
+                        <input type="text" class="form-control" name="certification_name">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Issuer</label>
+                        <input type="text" class="form-control" name="certification_issuer">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Year</label>
+                        <input type="text" class="form-control" name="certification_date">
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeEntryCard(this)">
+                    <i class="fas fa-trash"></i> Remove Entry
+                </button>
+            </div>
+        `;
+        container.appendChild(newEntry);
+    }
+
+    function addInterestEntry() {
+        const container = document.getElementById('interestEntries');
+        const newEntry = document.createElement('div');
+        newEntry.className = 'interest-entry card mb-3';
+        newEntry.innerHTML = `
+            <div class="card-body">
+                <h5 class="card-title">Interest Entry</h5>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Interest/Hobby</label>
+                        <input type="text" class="form-control" name="interest">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Description</label>
+                        <input type="text" class="form-control" name="interest_description">
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeEntryCard(this)">
+                    <i class="fas fa-trash"></i> Remove Entry
+                </button>
+            </div>
+        `;
+        container.appendChild(newEntry);
+    }
+
+    function removeEntryCard(button) {
+        const card = button.closest('.card');
+        card.remove();
+    }
+
+    // Initialize with a few default fields
+    window.onload = function() {
+        // Add default business skills
+        addField('businessSkills', 'skills');
+        addField('businessSkills', 'skills');
+        
+        // Add default technical skills
+        addField('technicalSkills', 'skills_tech');
+        addField('technicalSkills', 'skills_tech');
+        
+        // Add default interest
+        addInterestEntry();
+    };
+</script>
+{% endblock %}

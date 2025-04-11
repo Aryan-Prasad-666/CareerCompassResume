@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-body text-center">
+                <h1 class="card-title">Welcome to Resume Builder</h1>
+                <p class="lead">Create professional resumes in minutes</p>
+                <div class="mt-4">
+                    <a href="{{ url_for('create') }}" class="btn btn-primary btn-lg">Create Resume</a>
+                </div>
+                
+                <div class="mt-5">
+                    <h3>Available Templates</h3>
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <img src="{{ url_for('static', filename='img/template1.png') }}" class="card-img-top" alt="Template 1">
+                                <div class="card-body">
+                                    <h5 class="card-title">Professional</h5>
+                                    <p class="card-text">A clean and modern professional template</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <img src="{{ url_for('static', filename='img/template2.png') }}" class="card-img-top" alt="Template 2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Classic</h5>
+                                    <p class="card-text">A traditional resume format</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <img src="{{ url_for('static', filename='img/template3.png') }}" class="card-img-top" alt="Template 3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Modern</h5>
+                                    <p class="card-text">A contemporary design with flair</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
